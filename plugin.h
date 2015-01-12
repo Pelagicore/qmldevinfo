@@ -1,4 +1,4 @@
-#ifndef QMLDEVINFO_PLUGIN_H
+    #ifndef QMLDEVINFO_PLUGIN_H
 #define QMLDEVINFO_PLUGIN_H
 
 #include <QQmlExtensionPlugin>
