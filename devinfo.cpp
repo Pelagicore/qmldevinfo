@@ -32,11 +32,13 @@ QStringList DevInfo::ip6Addresses()
 QString DevInfo::softwareVersion()
 {
     QSettings osRelease("/etc/os-release", QSettings::IniFormat);
+    return osRelease.value("PRETTY_NAME").toString();
+}
 
-    QString prettyName = osRelease.value("PRETTY_NAME").toString();
-    QString buildNumber = " (" + osRelease.value("BUILD_ID", "snapshot").toString() + ")";
-
-    return prettyName + buildNumber;
+QString DevInfo::buildId()
+{
+    QSettings osRelease("/etc/os-release", QSettings::IniFormat);
+    return osRelease.value("BUILD_ID", "snapshot").toString();
 }
 
 QString DevInfo::nameServer()

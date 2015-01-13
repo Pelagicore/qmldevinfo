@@ -4,8 +4,8 @@ import QtQuick.Controls 1.2
 ApplicationWindow {
     id: window
     visible: true
-    width: 400
-    height: 462
+    width: 480
+    height: 640
 
     menuBar: MenuBar {
 
