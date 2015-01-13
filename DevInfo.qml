@@ -3,12 +3,25 @@ import com.pelagicore.qmldevinfo 0.1;
 
 Item {
     Column {
+
         Text {
-            text: "IPV4: " + devinfo.ipAddress
+            text: "Version: \t" + devinfo.softwareVersion
         }
 
         Text {
-            text: "IPV6: " + devinfo.ipAddress6
+            text: "IPV4: \t" + devinfo.ipAddresses.join("\n\t")
+        }
+
+        Text {
+            text: "IPV6: \t" + devinfo.ip6Addresses.join("\n\t")
+        }
+
+        Text {
+            text: "DNS: \t" + devinfo.nameServer
+        }
+
+        Text {
+            text: "Gateway:\t" + devinfo.defaultGateway
         }
     }
 

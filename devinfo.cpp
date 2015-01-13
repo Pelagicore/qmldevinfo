@@ -1,17 +1,17 @@
 #include "devinfo.h"
 
 #include <QGuiApplication>
+#include <QSettings>
+
 #include <stdio.h>
 #include <sys/types.h>
 #include <ifaddrs.h>
 #include <netinet/in.h>
 #include <string.h>
-#include <arpa/inet.h>
 
 DevInfo::DevInfo(QObject *parent):
     QObject(parent)
 {
-
 }
 
 DevInfo::~DevInfo()
@@ -19,45 +19,68 @@ DevInfo::~DevInfo()
 }
 
 
-QString DevInfo::ipAddress()
+QStringList DevInfo::ipAddresses()
 {
-    QList<QString> addresses = getIpAddresses();
-    QStringList ips;
+    return getIpAddresses(AF_INET);
+}
 
-    for(int i = 0; i < addresses.count(); i++) {
-        QString address = addresses.at(i);
+QStringList DevInfo::ip6Addresses()
+{
+    return getIpAddresses(AF_INET6);
+}
 
-        if(address != "127.0.0.1" && address.indexOf(":") == -1) {
-            ips << address;
+QString DevInfo::softwareVersion()
+{
+    QSettings osRelease("/etc/os-release", QSettings::IniFormat);
+
+    QString prettyName = osRelease.value("PRETTY_NAME").toString();
+    QString buildNumber = " (" + osRelease.value("BUILD_ID", "snapshot").toString() + ")";
+
+    return prettyName + buildNumber;
+}
+
+QString DevInfo::nameServer()
+{
+    QString ip;
+
+    QFile f("/etc/resolv.conf");
+    f.open(QIODevice::ReadOnly);
+
+    while (!f.atEnd()) {
+        QString line = QString(f.readLine()).trimmed();
+        if(line.startsWith("nameserver ")) {
+            ip = line.mid(11, line.length());
+            break;
         }
     }
 
-    return ips.join(", ");
+    f.close();
+
+    return ip;
 }
 
-QString DevInfo::ipAddress6()
+QString DevInfo::defaultGateway()
 {
-    QList<QString> addresses = getIpAddresses();
-    QStringList ips;
+    char* gateway = NULL;
+    const char* cmd = "netstat -rn | grep '^0.0.0.0' | grep 'UG[ \t]' |  awk '{print $2}'";
+    FILE* fp = popen(cmd, "r");
+    char line[256] = {0x0};
 
-    for(int i = 0; i < addresses.count(); i++) {
-        QString address = addresses.at(i);
+    if(fgets(line, sizeof(line), fp) != NULL)
+        gateway = line;
 
-        if(address != "::1" && address.indexOf(".") == -1) {
-            ips << address;
-        }
-    }
+    pclose(fp);
 
-    return ips.join(", ");
+    return QString(gateway);
 }
 
-QList<QString> DevInfo::getIpAddresses()
+QStringList DevInfo::getIpAddresses(sa_family_t ip_type)
 {
-    QList<QString> addresses;
+    QStringList addresses;
 
-    struct ifaddrs * ifAddrStruct=NULL;
-    struct ifaddrs * ifa=NULL;
-    void * tmpAddrPtr=NULL;
+    struct ifaddrs * ifAddrStruct = NULL;
+    struct ifaddrs * ifa = NULL;
+    void * tmpAddrPtr = NULL;
 
     getifaddrs(&ifAddrStruct);
 
@@ -67,7 +90,7 @@ QList<QString> DevInfo::getIpAddresses()
             continue;
         }
 
-        if (ifa->ifa_addr->sa_family == AF_INET) { // check it is IP4
+        if (ip_type == AF_INET && ifa->ifa_addr->sa_family == AF_INET) { // check it is IP4
 
             // is a valid IP4 Address
             tmpAddrPtr=&((struct sockaddr_in *)ifa->ifa_addr)->sin_addr;
@@ -75,7 +98,7 @@ QList<QString> DevInfo::getIpAddresses()
             inet_ntop(AF_INET, tmpAddrPtr, addressBuffer, INET_ADDRSTRLEN);
             addresses.append(QString(addressBuffer));
 
-        } else if (ifa->ifa_addr->sa_family == AF_INET6) { // check it is IP6
+        } else if (ip_type == AF_INET6 && ifa->ifa_addr->sa_family == AF_INET6) { // check it is IP6
 
             // is a valid IP6 Address
             tmpAddrPtr=&((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr;
