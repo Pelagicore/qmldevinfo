@@ -1,9 +1,9 @@
 #ifndef DEVINFO_H
 #define DEVINFO_H
 
-#include <arpa/inet.h>
-
 #include <QQuickItem>
+#include <QNetworkInterface>
+
 
 class DevInfo : public QObject
 {
@@ -28,7 +28,7 @@ public:
     ~DevInfo();
 
 private:
-    QStringList getIpAddresses(sa_family_t ip_type);
+    QStringList getIpAddresses(QAbstractSocket::NetworkLayerProtocol protocol);
 
 };
 
