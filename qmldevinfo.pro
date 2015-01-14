@@ -24,7 +24,9 @@ HEADERS += \
 
 OTHER_FILES = qmldir \
     main.qml \
-    DevInfo.qml
+    DevInfo.qml \
+    README.md \
+    LICENSE.txt
 
 copy_qmldir.target = $$DESTDIR/qmldir
 copy_qmldir.depends = $$_PRO_FILE_PWD_/qmldir
