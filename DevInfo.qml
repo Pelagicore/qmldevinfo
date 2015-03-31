@@ -1,3 +1,4 @@
+/* Copyright 2014-2015 Pelagicore Group */
 import QtQuick 2.0
 import com.pelagicore.qmldevinfo 0.1;
 

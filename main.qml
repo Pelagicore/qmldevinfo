@@ -1,3 +1,4 @@
+/* Copyright 2014-2015 Pelagicore Group */
 import QtQuick 2.0
 import QtQuick.Controls 1.2
 

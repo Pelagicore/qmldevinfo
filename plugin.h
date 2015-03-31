@@ -1,3 +1,4 @@
+/* Copyright 2014-2015 Pelagicore Group */
     #ifndef QMLDEVINFO_PLUGIN_H
 #define QMLDEVINFO_PLUGIN_H
 

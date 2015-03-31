@@ -1,3 +1,4 @@
+/* Copyright 2014-2015 Pelagicore Group */
 #ifndef DEVINFO_H
 #define DEVINFO_H
 
