@@ -10,12 +10,12 @@ class DevInfo : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QStringList ipAddresses READ ipAddresses CONSTANT)
-    Q_PROPERTY(QStringList ip6Addresses READ ip6Addresses CONSTANT)
+    Q_PROPERTY(QStringList ipAddresses READ ipAddresses NOTIFY ipAddressesChanged)
+    Q_PROPERTY(QStringList ip6Addresses READ ip6Addresses NOTIFY ip6AddressesChanged)
     Q_PROPERTY(QString softwareVersion READ softwareVersion CONSTANT)
     Q_PROPERTY(QString buildId READ buildId CONSTANT)
-    Q_PROPERTY(QString nameServer READ nameServer CONSTANT)
-    Q_PROPERTY(QString defaultGateway READ defaultGateway CONSTANT)
+    Q_PROPERTY(QString nameServer READ nameServer NOTIFY nameServerChanged)
+    Q_PROPERTY(QString defaultGateway READ defaultGateway NOTIFY defaultGatewayChanged)
 
 public:
     QStringList ipAddresses();
@@ -27,6 +27,12 @@ public:
 
     DevInfo(QObject *parent = 0);
     ~DevInfo();
+
+signals:
+    void ipAddressesChanged(QStringList &addresses);
+    void ip6AddressesChanged(QStringList &addresses);
+    void nameServerChanged(QString &nameServer);
+    void defaultGatewayChanged(QString &gateway);
 
 private:
     QStringList getIpAddresses(QAbstractSocket::NetworkLayerProtocol protocol);
