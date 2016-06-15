@@ -13,7 +13,7 @@ A QML plugin to show some information about the target it is running on.
 
 ## Usage
 
-Check `SystemInfo.qml` on how to use it, for now there are 6 properties:
+Check `example` folder on how to use it, for now there are 6 properties:
 
 1. softwareVersion -- reading `PRETTY_NAME` from `/etc/os-release`
 2. buildId -- reading `BUILD_ID` from `/etc/os-release`

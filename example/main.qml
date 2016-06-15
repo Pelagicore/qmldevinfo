@@ -3,7 +3,8 @@ import QtQuick 2.0
 import com.pelagicore.qmldevinfo 0.1;
 
 Item {
-    anchors.fill: parent
+    width: 400
+    height: 400
 
     Rectangle {
         color: "white"
