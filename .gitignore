@@ -1,1 +1,3 @@
-qmldevinfo.pro.user
+**/*.pro.user
+build*
+**/build*
