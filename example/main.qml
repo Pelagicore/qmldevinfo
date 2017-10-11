@@ -1,10 +1,12 @@
 /* Copyright 2014-2015 Pelagicore Group */
-import QtQuick 2.0
+import QtQuick 2.6;
+import QtQuick.Controls 2.2;
 import com.pelagicore.qmldevinfo 0.1;
 
-Item {
-    width: 400
-    height: 400
+ApplicationWindow {
+    height: 600
+    width: 600
+    visible: true
 
     Rectangle {
         color: "white"
