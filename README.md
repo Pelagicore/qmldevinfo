@@ -11,6 +11,13 @@ A QML plugin to show some information about the target it is running on.
     make
     sudo make install
 
+## QMake flags
+
+The plugin can be configured to enable features. Currently supported features 
+are:
+
+* ENABLE_EXAMPLES -- enables the build of currently available examples. 
+
 ## Usage
 
 Check `example` folder on how to use it, for now there are 6 properties:
